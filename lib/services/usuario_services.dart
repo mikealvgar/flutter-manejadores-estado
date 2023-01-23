@@ -18,10 +18,17 @@ class UsuarioServices with ChangeNotifier{
 
   void cambiarEdad( int edad ) {
     _usuario?.edad = edad;
+    notifyListeners();
   }
 
   void removeUsuario(){
     _usuario = null;
+    notifyListeners();
+  }
+
+  void agregarProfesion(){
+    _usuario?.profesiones?.add('Profesion: ${_usuario!.profesiones!.length + 1}');
+    notifyListeners();
   }
 
 }

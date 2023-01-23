@@ -14,11 +14,11 @@ class Pagina1Page extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pagina 1'),
+        title: usuarioService.existeUsuario ? Text('${usuarioService.usuario?.nombre}') :  Text('Pagina 1'),
         actions: [
           IconButton(
             onPressed: (){
-              
+              usuarioService.removeUsuario();
             }, 
             icon: const Icon(Icons.exit_to_app))
         ],
@@ -49,17 +49,17 @@ class InformacionUsuario extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('General', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
-          Divider(),
+          const Text('General', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
+          const Divider(),
 
           ListTile(title: Text('Nombre: ${usuario.nombre}')),
           ListTile(title: Text('Edad: ${usuario.edad}')),
           
-          Text('Profesiones', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
-          Divider(),
-          ListTile(title: Text('Profesion 1: ')),
-          ListTile(title: Text('Profesion 1: ')),
-          ListTile(title: Text('Profesion 1: ')),
+          const Text('Profesiones', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
+          const Divider(),
+
+          ...usuario.profesiones!.map((e) => ListTile(title: Text(e))).toList()
+          //ListTile(title: Text('Profesion 1: ')),
         ],
       ),
     );
