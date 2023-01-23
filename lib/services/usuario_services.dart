@@ -11,6 +11,8 @@ class UsuarioServices with ChangeNotifier{
   Usuario? get usuario => _usuario; 
   bool get existeUsuario => (_usuario != null) ? true : false;
 
+  get usuarioStream => null;
+
   set usuario( Usuario? user ) {
     _usuario = user;
     notifyListeners();

@@ -1,8 +1,9 @@
-import 'package:counter_app/models/usuario.dart';
-import 'package:counter_app/services/usuario_services.dart';
+import 'package:counter_app/services/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
+import '../models/usuario.dart';
 
 class Pagina2Page extends StatelessWidget {
   const Pagina2Page({super.key});
@@ -10,11 +11,17 @@ class Pagina2Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final usuarioServices = Provider.of<UsuarioServices>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: usuarioServices.existeUsuario ? Text('${usuarioServices.usuario?.nombre}') : const Text('Pagina 2'),
+        title: StreamBuilder(
+          stream: usuarioService.usuarioStream,
+          builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot) {
+            return snapshot.hasData 
+              ? Text('Nombre: ${snapshot.data!.nombre}')
+              : const Text('Pagina 2');
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -24,9 +31,10 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: (){
-                
-                final newUser = Usuario(nombre: 'Miguel Alvarez', edad: 24, profesiones: ['FullStack Developer', 'Gamer Player Expert']);
-                usuarioServices.usuario = newUser;
+
+                final nuevoUsuario = Usuario(nombre: 'Miguel', edad: 24);
+
+                usuarioService.cargarUsuario(nuevoUsuario);
 
               },
               child: const Text('Establecer Usuario', style: TextStyle( color: Colors.white),),
@@ -35,18 +43,14 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: (){
-
-                usuarioServices.cambiarEdad(30);
-
+                usuarioService.cambiarEdad(30);
               },
               child: const Text('Cambiar Edad', style: TextStyle( color: Colors.white),),
             ),
 
             MaterialButton(
               color: Colors.blue,
-              onPressed: (){
-                usuarioServices.agregarProfesion();
-              },
+              onPressed: (){},
               child: const Text('Añadir Profesión', style: TextStyle( color: Colors.white),),
             )
           ],
